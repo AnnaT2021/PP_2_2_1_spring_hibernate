@@ -1,6 +1,7 @@
 package hiber;
 
 import hiber.config.AppConfig;
+import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,10 +16,25 @@ public class MainApp {
 
       UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
+      User user1 = new User("User1", "Lastname1", "user1@mail.ru");
+      User user2 = new User("User2", "Lastname2", "user2@mail.ru");
+      User user3 = new User("User3", "Lastname3", "user3@mail.ru");
+      User user4 = new User("User4", "Lastname4", "user4@mail.ru");
+
+      Car car1 = new Car("Model1", 1);
+      Car car2 = new Car("Model2", 2);
+      Car car3 = new Car("Model3", 3);
+      Car car4 = new Car("Model4", 4);
+
+      user1.setUserCar(car1);
+      user2.setUserCar(car2);
+      user3.setUserCar(car3);
+      user4.setUserCar(car4);
+
+      userService.add(user1);
+      userService.add(user2);
+      userService.add(user3);
+      userService.add(user4);
 
       List<User> users = userService.listUsers();
       for (User user : users) {
@@ -28,6 +44,18 @@ public class MainApp {
          System.out.println("Email = "+user.getEmail());
          System.out.println();
       }
+
+     List<Car> cars = userService.listCars();
+      for (Car car: cars) {
+         System.out.println("Id = "+car.getId());
+         System.out.println("Model = "+car.getModel());
+         System.out.println("Series = "+car.getSeries());
+         System.out.println();
+      }
+
+      User userByCar = userService.getUserByCar("Model2", 2);
+      System.out.println("Id = "+userByCar.getId()+" |First Name = "+userByCar.getFirstName()+
+              " |Last Name = " +userByCar.getLastName()+" |Email = "+userByCar.getEmail());
 
       context.close();
    }
